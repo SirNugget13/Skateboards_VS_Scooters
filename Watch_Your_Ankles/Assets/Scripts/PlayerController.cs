@@ -5,26 +5,40 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    //Players Rigidbody
     private Rigidbody2D myRB;
 
+    //Player 1 or 2 Bool
     public bool player2;
 
-    public float speed;
+    //Move Variables
+    public float moveSpeed;
     private Vector2 move;
 
-    // Start is called before the first frame update
+    //Push Variables
+    private bool pushOn;
+    public float pushInterval;
+
+    //Brake Variables
+    public float brakeSpeed;
+    
     void Start()
     {
+        //Assigns Rigidbody
         myRB = GetComponent<Rigidbody2D>();
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
+        //Inputs
         if (!player2)
         {
             if (Gamepad.current == null)
+            {
                 move.x = Input.GetAxis("Horizontal");
+                if (Input.GetMouseButton(0))
+                    myRB.velocity = Vector2.MoveTowards(myRB.velocity, Vector2.zero, brakeSpeed * Time.deltaTime);
+            }
             else
                 move.x = Gamepad.all[0].leftStick.value.x;
         }
@@ -32,8 +46,24 @@ public class PlayerController : MonoBehaviour
         {
             move.x = Gamepad.all[1].leftStick.value.x;
         }
-        Vector2 temp = move * speed;
-        if (Input.GetMouseButtonDown(0))
-            myRB.AddForce(new Vector2(temp.x, 0));
+
+        //Move Variable
+        Vector2 temp = move * moveSpeed;
+        if (Mathf.Abs(temp.x) > 0.1f || Mathf.Abs(temp.y) > 0.1f)
+            pushOn = true;
+        else
+            pushOn = false;
+
+        //Move
+        if (pushOn)
+        {
+            if (pushInterval <= 0)
+            {
+                myRB.AddForce(new Vector2(temp.x, 0));
+                pushInterval = .5f;
+            }
+            else
+                pushInterval -= Time.deltaTime;
+        }
     }
 }
