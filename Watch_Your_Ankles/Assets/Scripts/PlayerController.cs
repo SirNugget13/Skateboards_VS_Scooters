@@ -66,14 +66,8 @@ public class PlayerController : MonoBehaviour
             else
                 pushInterval -= Time.deltaTime;
         }
-        
-        //Rotate
-        Vector3 targ = new Vector2(0, 4);
-        targ.z = 0f;
 
-        Vector3 objectPos = playerSprite.transform.position;
-        targ.x = targ.x - objectPos.x;
-        targ.y = targ.y - objectPos.y;
-        playerSprite.transform.rotation = Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(targ.y, targ.x) * Mathf.Rad2Deg));
+        //Rotate
+        playerSprite.transform.rotation = Physics2D.Raycast(playerSprite.transform.position + new Vector3(0, -.6f, 0), Vector2.down).transform.rotation;
     }
 }
