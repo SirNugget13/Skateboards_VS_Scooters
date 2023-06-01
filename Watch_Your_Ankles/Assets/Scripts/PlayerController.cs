@@ -74,7 +74,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //Rotate
-        playerSprite.transform.rotation = Physics2D.Raycast(playerSprite.transform.position + new Vector3(0, -.6f, 0), Vector2.down).transform.rotation;
+        playerSprite.transform.rotation = Physics2D.Raycast(playerSprite.transform.position + new Vector3(0, -.6f, 0), playerSprite.transform.TransformDirection(Vector2.down)).transform.rotation;
+        Debug.DrawRay(playerSprite.transform.position + new Vector3(0, -.6f, 0), playerSprite.transform.TransformDirection(Vector2.down));
 
         //Health Stuff
         if (hp <= 0)
