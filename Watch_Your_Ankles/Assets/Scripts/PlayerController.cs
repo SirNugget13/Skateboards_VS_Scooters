@@ -12,9 +12,15 @@ public class PlayerController : MonoBehaviour
     //Player 1 or 2 Bool
     public bool player2;
 
+    //Player Health and Respawn Variables
+    public float hp;
+    public float spawnMoveSpeed;
+    public Vector2 spawnPos;
+
     //Move Variables
     public float moveSpeed;
     private Vector2 move;
+    public bool canMove;
 
     //Push Variables
     private bool pushOn;
@@ -56,7 +62,7 @@ public class PlayerController : MonoBehaviour
             pushOn = false;
 
         //Move
-        if (pushOn)
+        if (pushOn && canMove)
         {
             if (pushInterval <= 0)
             {
@@ -69,5 +75,19 @@ public class PlayerController : MonoBehaviour
 
         //Rotate
         playerSprite.transform.rotation = Physics2D.Raycast(playerSprite.transform.position + new Vector3(0, -.6f, 0), Vector2.down).transform.rotation;
+
+        //Health Stuff
+        if (hp <= 0)
+        {
+            canMove = false;
+            myRB.simulated = false;
+            transform.position = Vector2.MoveTowards(transform.position, spawnPos, spawnMoveSpeed * Time.deltaTime);
+            if (transform.position == new Vector3(spawnPos.x, spawnPos.y, 0))
+            {
+                hp = 3;
+                canMove = true;
+                myRB.simulated = true;
+            }
+        }
     }
 }
