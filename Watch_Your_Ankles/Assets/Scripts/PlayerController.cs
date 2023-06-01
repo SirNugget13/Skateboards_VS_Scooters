@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
         {
             if (pushInterval <= 0)
             {
-                myRB.AddForce(new Vector2(temp.x, 0));
+                myRB.AddForce(playerSprite.transform.TransformDirection(Vector2.right) * temp.x);
                 pushInterval = .5f;
             }
             else
