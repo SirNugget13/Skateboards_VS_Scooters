@@ -5,8 +5,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    //Players Rigidbody
+    //Players Rigidbody and Sprite
     private Rigidbody2D myRB;
+    public GameObject playerSprite;
 
     //Player 1 or 2 Bool
     public bool player2;
@@ -65,5 +66,14 @@ public class PlayerController : MonoBehaviour
             else
                 pushInterval -= Time.deltaTime;
         }
+        
+        //Rotate
+        Vector3 targ = new Vector2(0, 4);
+        targ.z = 0f;
+
+        Vector3 objectPos = playerSprite.transform.position;
+        targ.x = targ.x - objectPos.x;
+        targ.y = targ.y - objectPos.y;
+        playerSprite.transform.rotation = Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(targ.y, targ.x) * Mathf.Rad2Deg));
     }
 }
