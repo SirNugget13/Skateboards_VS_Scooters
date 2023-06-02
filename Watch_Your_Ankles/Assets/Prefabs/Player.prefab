@@ -142,7 +142,8 @@ MonoBehaviour:
   hp: 3
   spawnMoveSpeed: 2
   spawnPos: {x: 0, y: 0}
-  moveSpeed: 50
+  moveSpeed: 75
+  jumpForce: 250
   canMove: 1
   pushInterval: 0
   brakeSpeed: 5
@@ -219,7 +220,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 36e5c75888639ea45bf10339cde4944e, type: 3}
+  m_Sprite: {fileID: 3625043607559282579, guid: c2e97442b3d35f84dbfafe94819a518d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.3529412}
   m_FlipX: 0
   m_FlipY: 0

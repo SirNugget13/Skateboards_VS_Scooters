@@ -5,9 +5,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    //Players Rigidbody and Sprite
+    //Players Rigidbody, Sprite, and Raycast
     private Rigidbody2D myRB;
     public GameObject playerSprite;
+    private RaycastHit2D below;
 
     //Player 1 or 2 Bool
     public bool player2;
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     //Move Variables
     public float moveSpeed;
+    public float jumpForce;
     private Vector2 move;
     public bool canMove;
 
@@ -61,22 +63,33 @@ public class PlayerController : MonoBehaviour
         else
             pushOn = false;
 
+        //Below Raycast
+        below = Physics2D.Raycast(playerSprite.transform.position + playerSprite.transform.TransformDirection(Vector2.down * .7f), playerSprite.transform.TransformDirection(Vector2.down), .15f);
+
         //Move
-        if (pushOn && canMove)
+        if (canMove)
         {
-            if (pushInterval <= 0)
+            if (pushOn)
             {
-                myRB.AddForce(playerSprite.transform.TransformDirection(Vector2.right) * temp.x);
-                pushInterval = .5f;
+                if (pushInterval <= 0)
+                {
+                    myRB.AddForce(playerSprite.transform.TransformDirection(Vector2.right) * temp.x);
+                    pushInterval = .5f;
+                }
+                else
+                    pushInterval -= Time.deltaTime;
             }
-            else
-                pushInterval -= Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.Space) && below)
+                myRB.AddForce(playerSprite.transform.TransformDirection(Vector2.up) * jumpForce);
         }
 
         //Rotate
-        playerSprite.transform.rotation = Physics2D.Raycast(playerSprite.transform.position + new Vector3(0, -.6f, 0), playerSprite.transform.TransformDirection(Vector2.down)).transform.rotation;
-        Debug.DrawRay(playerSprite.transform.position + new Vector3(0, -.6f, 0), playerSprite.transform.TransformDirection(Vector2.down));
-
+        RaycastHit2D staticBelow = Physics2D.Raycast(playerSprite.transform.position + new Vector3(0, -.7f, 0), Vector2.down, .35f);
+        if (below)
+            playerSprite.transform.rotation = below.transform.rotation;
+        else if (!below && staticBelow)
+            playerSprite.transform.rotation = staticBelow.transform.rotation;
+        
         //Health Stuff
         if (hp <= 0)
         {
