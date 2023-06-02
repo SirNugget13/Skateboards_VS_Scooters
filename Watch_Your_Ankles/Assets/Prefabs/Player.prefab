@@ -146,7 +146,7 @@ MonoBehaviour:
   jumpForce: 250
   canMove: 1
   pushInterval: 0
-  brakeSpeed: 5
+  brakeSpeed: 12
 --- !u!1 &6598307383320446509
 GameObject:
   m_ObjectHideFlags: 0
