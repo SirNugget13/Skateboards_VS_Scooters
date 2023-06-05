@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6598307383205170724}
   - component: {fileID: 6598307383205170725}
   - component: {fileID: 6598307383205170722}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -139,11 +139,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSprite: {fileID: 6598307383320446509}
   player2: 0
-  hp: 3
+  lives: 4
+  hp: 0
   spawnMoveSpeed: 2
   spawnPos: {x: 0, y: 0}
-  moveSpeed: 75
+  spawnBox: {fileID: 0}
   jumpForce: 250
+  moveSpeed: 75
   canMove: 1
   pushInterval: 0
   brakeSpeed: 12

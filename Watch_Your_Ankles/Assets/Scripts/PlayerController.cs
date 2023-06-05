@@ -14,13 +14,16 @@ public class PlayerController : MonoBehaviour
     public bool player2;
 
     //Player Health and Respawn Variables
+    public int lives;
     public float hp;
     public float spawnMoveSpeed;
     public Vector2 spawnPos;
+    public GameObject spawnBox;
 
     //Move Variables
-    public float moveSpeed;
+    private bool jumpInput;
     public float jumpForce;
+    public float moveSpeed;
     private Vector2 move;
     public bool canMove;
 
@@ -42,18 +45,36 @@ public class PlayerController : MonoBehaviour
         //Inputs
         if (!player2)
         {
-            if (Gamepad.current == null)
+            if (Gamepad.all.Count >= 1)
+            {
+                move.x = Gamepad.all[0].leftStick.value.x;
+                jumpInput = Gamepad.all[0].buttonSouth.wasPressedThisFrame;
+                if (Gamepad.all[0].leftTrigger.isPressed)
+                    myRB.velocity = Vector2.MoveTowards(myRB.velocity, Vector2.zero, brakeSpeed * Time.deltaTime);
+            }
+            else
+            {
+                move.x = Input.GetAxis("Horizontal");
+                jumpInput = Input.GetKeyDown(KeyCode.Space);
+                if (Input.GetMouseButton(0))
+                    myRB.velocity = Vector2.MoveTowards(myRB.velocity, Vector2.zero, brakeSpeed * Time.deltaTime);
+            }
+        }
+        else
+        {
+            if (Gamepad.all.Count >= 2)
+            {
+                move.x = Gamepad.all[1].leftStick.value.x;
+                jumpInput = Gamepad.all[1].buttonSouth.wasPressedThisFrame;
+                if (Gamepad.all[1].leftTrigger.isPressed)
+                    myRB.velocity = Vector2.MoveTowards(myRB.velocity, Vector2.zero, brakeSpeed * Time.deltaTime);
+            }
+            /*else
             {
                 move.x = Input.GetAxis("Horizontal");
                 if (Input.GetMouseButton(0))
                     myRB.velocity = Vector2.MoveTowards(myRB.velocity, Vector2.zero, brakeSpeed * Time.deltaTime);
-            }
-            else
-                move.x = Gamepad.all[0].leftStick.value.x;
-        }
-        else
-        {
-            move.x = Gamepad.all[1].leftStick.value.x;
+            }*/
         }
 
         //Move Variable
@@ -79,7 +100,7 @@ public class PlayerController : MonoBehaviour
                 else
                     pushInterval -= Time.deltaTime;
             }
-            if (Input.GetKeyDown(KeyCode.Space) && below)
+            if (jumpInput && below)
                 myRB.AddForce(playerSprite.transform.TransformDirection(Vector2.up) * jumpForce);
         }
 
@@ -92,16 +113,27 @@ public class PlayerController : MonoBehaviour
         
         //Health Stuff
         if (hp <= 0)
+            Respawn();
+    }
+
+    private void Respawn()
+    {
+        canMove = false;
+        myRB.simulated = false;
+        transform.position = Vector2.MoveTowards(transform.position, spawnPos, spawnMoveSpeed * Time.deltaTime);
+        Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), spawnBox.GetComponent<BoxCollider2D>(), true);
+        if (transform.position == new Vector3(spawnPos.x, spawnPos.y, 0) && lives > 0)
         {
-            canMove = false;
-            myRB.simulated = false;
-            transform.position = Vector2.MoveTowards(transform.position, spawnPos, spawnMoveSpeed * Time.deltaTime);
-            if (transform.position == new Vector3(spawnPos.x, spawnPos.y, 0))
-            {
-                hp = 3;
-                canMove = true;
-                myRB.simulated = true;
-            }
+            lives--;
+            hp = 20;
+            canMove = true;
+            myRB.simulated = true;
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Spawn")
+            Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), spawnBox.GetComponent<BoxCollider2D>(), false);
     }
 }
