@@ -12,14 +12,16 @@ public class AttackController : MonoBehaviour
     public bool player2;
 
     //Attack Cooldown
-    public float atkCool;
+    public float atkCool = .5f;
 
+    //colliders, inputs, and controller
     private PlayerController Contr;
     public ContactFilter2D Hitboxes;
     public Collider2D[] attackHitboxes;
     public Collider2D[] hitEnemies;
     public InputAction Hit1;
     public InputAction Hit2;
+
     private void OnEnable()
     {
         Hit1.Enable();
@@ -35,12 +37,20 @@ public class AttackController : MonoBehaviour
 
     private void Update()
     {
+        if(atkCool > 0)
+        atkCool -= Time.deltaTime;
+
         //Attack Keys
-        if (Hit1.IsPressed())        
-            LaunchAttack(attackHitboxes[0]);        
-        if (Hit1.IsPressed())
+        if (Hit1.WasPressedThisFrame() && atkCool <= 0)
+        {
             LaunchAttack(attackHitboxes[0]);
-        
+            atkCool = .5f;
+        }
+        if (Hit2.WasPressedThisFrame() && atkCool <= 0)
+        {
+            LaunchAttack(attackHitboxes[1]);
+            atkCool = .5f;
+        }
 
     }
 
@@ -51,7 +61,9 @@ public class AttackController : MonoBehaviour
         {
             if (c.transform.parent == transform)
                 continue;
-            Debug.Log(c.name);
+           
+            Debug.Log(Contr.momentum);
+            
         }
     }
 }
