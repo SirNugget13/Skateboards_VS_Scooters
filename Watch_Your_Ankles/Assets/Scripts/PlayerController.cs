@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,10 +17,11 @@ public class PlayerController : MonoBehaviour
 
     //Player Health and Respawn Variables
     public int lives;
-    public float hp;
+    public float hp, hpMax;
     public float spawnMoveSpeed;
     public Vector2 spawnPos;
     public GameObject spawnBox;
+    public Image hpBar;
 
     //Move Variables
     private bool jumpInput;
@@ -99,7 +102,7 @@ public class PlayerController : MonoBehaviour
         if (transform.position == new Vector3(spawnPos.x, spawnPos.y, 0) && lives > 0)
         {
             lives--;
-            hp = 20;
+            hp = hpMax;
             canMove = true;
             myRB.simulated = true;
         }

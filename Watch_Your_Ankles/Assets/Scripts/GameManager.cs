@@ -8,7 +8,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    private PlayerController[] players;
+    public PlayerController[] players;
 
     public float gameTime;
     public TextMeshProUGUI gameTimeUI;
@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] selectors;
 
-    private void Start()
+    void Start()
     {
         players[0] = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<PlayerController>();
         players[1] = GameObject.FindGameObjectsWithTag("Player")[1].GetComponent<PlayerController>();
@@ -52,6 +52,11 @@ public class GameManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().buildIndex == 1)
         {
+            Debug.Log(players[0].hpBar.fillAmount);
+            Debug.Log(players[0].hp);
+            Debug.Log(players[0].hpMax);
+            //players[0].hpBar.fillAmount = players[0].hp / players[0].hpMax;
+            //players[1].hpBar.fillAmount = players[1].hp / players[1].hpMax;
             if (gameTime > 0)
             {
                 gameTime -= Time.deltaTime;

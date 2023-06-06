@@ -141,12 +141,16 @@ MonoBehaviour:
   player2: 0
   lives: 4
   hp: 0
+  hpMax: 20
   spawnMoveSpeed: 2
-  spawnPos: {x: 0, y: 0}
+  spawnPos: {x: -7.25, y: 0.74}
   spawnBox: {fileID: 0}
+  hpBar: {fileID: 0}
   jumpForce: 250
   moveSpeed: 75
   canMove: 1
+  momentum: 0
+  momentumMultiplier: 0
   pushInterval: 0
   brakeSpeed: 12
 --- !u!1 &6598307383320446509
