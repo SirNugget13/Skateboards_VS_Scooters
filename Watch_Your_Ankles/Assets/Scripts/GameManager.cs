@@ -8,41 +8,43 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    private PlayerController[] players;
+
     public float gameTime;
     public TextMeshProUGUI gameTimeUI;
 
     public bool paused;
-    public GameObject pauseMenu;
-    public GameObject endMenu;
+    public GameObject pauseMenu, endMenu;
 
     public int selection;
     public bool selectDone;
 
     public GameObject[] selectors;
-    
-    void Start()
+
+    private void Start()
     {
-        
+        players[0] = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<PlayerController>();
+        players[1] = GameObject.FindGameObjectsWithTag("Player")[1].GetComponent<PlayerController>();
     }
-    
+
     void Update()
     {
         if (SceneManager.GetActiveScene().buildIndex == 0 || paused)
         {
             if (!selectDone)
             {
-                if ((Gamepad.current.leftStick.value.y < -.5f || Input.GetAxisRaw("Vertical") < -.1f) && selection < selectors.Length - 1)
+                if ((Gamepad.current.leftStick.value.y < -.5f || Input.GetAxisRaw("Vertical") < -.1f || Input.GetAxisRaw("Second Vertical") < -.1f) && selection < selectors.Length - 1)
                 {
                     selection++;
                     Select();
                 }
-                if ((Gamepad.current.leftStick.value.y > .5f || Input.GetAxisRaw("Vertical") > .1f) && selection > 0)
+                if ((Gamepad.current.leftStick.value.y > .5f || Input.GetAxisRaw("Vertical") > .1f || Input.GetAxisRaw("Second Vertical") > .1f) && selection > 0)
                 {
                     selection--;
                     Select();
                 }
             }
-            if (Gamepad.current.leftStick.value.y + Input.GetAxisRaw("Vertical") == 0)
+            if (Gamepad.current.leftStick.value.y + Input.GetAxisRaw("Vertical") + Input.GetAxisRaw("Second Vertical") == 0)
                 selectDone = false;
             if (Gamepad.current.buttonSouth.wasPressedThisFrame || Input.GetMouseButtonDown(0))
                 SelectPress();
@@ -63,12 +65,16 @@ public class GameManager : MonoBehaviour
                         pauseMenu.SetActive(true);
                         Time.timeScale = 0;
                         paused = true;
+                        players[0].canMove = false;
+                        players[1].canMove = false;
                     }
                     else
                     {
                         pauseMenu.SetActive(false);
                         Time.timeScale = 1;
                         paused = false;
+                        players[0].canMove = true;
+                        players[1].canMove = true;
                     }
                 }
             }
@@ -77,6 +83,8 @@ public class GameManager : MonoBehaviour
                 pauseMenu.SetActive(false);
                 endMenu.SetActive(true);
                 paused = false;
+                players[0].canMove = false;
+                players[1].canMove = false;
                 Time.timeScale = 0;
                 if (Gamepad.current.buttonSouth.wasPressedThisFrame || Input.GetMouseButtonDown(0))
                     LoadScene(0);
@@ -107,6 +115,8 @@ public class GameManager : MonoBehaviour
                 pauseMenu.SetActive(false);
                 Time.timeScale = 1;
                 paused = false;
+                players[0].canMove = true;
+                players[1].canMove = true;
             }
         }
         else if (selection == 1)
