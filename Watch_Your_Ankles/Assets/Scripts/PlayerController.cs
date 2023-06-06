@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     private Vector2 move;
     public bool canMove;
+    public float momentum;
+    public float momentumMultiplier;
 
     //Push Variables
     private bool pushOn;
@@ -44,41 +46,13 @@ public class PlayerController : MonoBehaviour
     {
         //Inputs
         if (!player2)
-        {
-            if (Gamepad.all.Count >= 1)
-            {
-                move.x = Gamepad.all[0].leftStick.value.x;
-                jumpInput = Gamepad.all[0].buttonSouth.wasPressedThisFrame;
-                if (Gamepad.all[0].leftTrigger.isPressed)
-                    myRB.velocity = Vector2.MoveTowards(myRB.velocity, Vector2.zero, brakeSpeed * Time.deltaTime);
-            }
-            else
-            {
-                move.x = Input.GetAxis("Horizontal");
-                jumpInput = Input.GetKeyDown(KeyCode.Space);
-                if (Input.GetMouseButton(0))
-                    myRB.velocity = Vector2.MoveTowards(myRB.velocity, Vector2.zero, brakeSpeed * Time.deltaTime);
-            }
-        }
+            Inputs(0, "Horizontal", Input.GetKeyDown(KeyCode.Space), Input.GetMouseButton(0));
         else
-        {
-            if (Gamepad.all.Count >= 2)
-            {
-                move.x = Gamepad.all[1].leftStick.value.x;
-                jumpInput = Gamepad.all[1].buttonSouth.wasPressedThisFrame;
-                if (Gamepad.all[1].leftTrigger.isPressed)
-                    myRB.velocity = Vector2.MoveTowards(myRB.velocity, Vector2.zero, brakeSpeed * Time.deltaTime);
-            }
-            /*else
-            {
-                move.x = Input.GetAxis("Horizontal");
-                if (Input.GetMouseButton(0))
-                    myRB.velocity = Vector2.MoveTowards(myRB.velocity, Vector2.zero, brakeSpeed * Time.deltaTime);
-            }*/
-        }
+            Inputs(1, "Second Horizontal", Input.GetKeyDown(KeyCode.UpArrow), Input.GetKey(KeyCode.DownArrow));
 
         //Move Variable
         Vector2 temp = move * moveSpeed;
+        momentum = (Mathf.Abs(myRB.velocity.x) + Mathf.Abs(myRB.velocity.y)) * momentumMultiplier;
         if (Mathf.Abs(temp.x) > 0.1f || Mathf.Abs(temp.y) > 0.1f)
             pushOn = true;
         else
@@ -128,6 +102,27 @@ public class PlayerController : MonoBehaviour
             hp = 20;
             canMove = true;
             myRB.simulated = true;
+        }
+    }
+
+    private void Inputs(int controlIndex, string keyHorizontal, bool jump, bool brake)
+    {
+        if (Gamepad.all.Count >= controlIndex + 1)
+        {
+            move.x = Gamepad.all[controlIndex].leftStick.value.x + Input.GetAxis(keyHorizontal);
+            if (Gamepad.all[controlIndex].buttonSouth.wasPressedThisFrame || jump)
+                jumpInput = true;
+            else
+                jumpInput = false;
+            if (Gamepad.all[controlIndex].leftTrigger.isPressed || brake)
+                myRB.velocity = Vector2.MoveTowards(myRB.velocity, Vector2.zero, brakeSpeed * Time.deltaTime);
+        }
+        else
+        {
+            move.x = Input.GetAxis(keyHorizontal);
+            jumpInput = jump;
+            if (brake)
+                myRB.velocity = Vector2.MoveTowards(myRB.velocity, Vector2.zero, brakeSpeed * Time.deltaTime);
         }
     }
 
