@@ -138,6 +138,10 @@ PrefabInstance:
       propertyPath: spawnBox
       value: 
       objectReference: {fileID: 904250151}
+    - target: {fileID: 6598307383205170722, guid: ad5e01b1305847b4c967b8019e0fa3b0, type: 3}
+      propertyPath: momentumMultiplier
+      value: 1.7
+      objectReference: {fileID: 0}
     - target: {fileID: 6598307383205170726, guid: ad5e01b1305847b4c967b8019e0fa3b0, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1161,6 +1165,36 @@ MonoBehaviour:
       m_Action: Hit 2
       m_Flags: 0
     m_Flags: 0
+--- !u!114 &1587761957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1587761955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 7839a8c7118960c4190aec59caf42e35, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1751810879
 GameObject:
   m_ObjectHideFlags: 0

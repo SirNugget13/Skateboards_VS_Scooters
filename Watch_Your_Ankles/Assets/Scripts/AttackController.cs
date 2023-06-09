@@ -7,7 +7,7 @@ public class AttackController : MonoBehaviour
 {
     //Ribigbody
     private Rigidbody2D myRB;
-
+    PlayerInput playerInput;
     //Player 1 or 2
     public bool player2;
 
@@ -37,7 +37,9 @@ public class AttackController : MonoBehaviour
 
     private void Update()
     {
-        if(atkCool > 0)
+       
+
+        if (atkCool > 0)
         atkCool -= Time.deltaTime;
 
         //Attack Keys
@@ -66,4 +68,6 @@ public class AttackController : MonoBehaviour
             
         }
     }
+   
 }
+
