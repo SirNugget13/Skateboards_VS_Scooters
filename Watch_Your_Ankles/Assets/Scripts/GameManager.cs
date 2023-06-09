@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
             {
                 gameTime -= Time.deltaTime;
                 gameTimeUI.text = "" + Mathf.RoundToInt(gameTime);
-                if (Gamepad.current.startButton.wasPressedThisFrame || Input.GetKeyDown(KeyCode.Escape))
+                if ((Gamepad.current != null && Gamepad.current.startButton.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Escape))
                 {
                     if (!paused)
                     {
